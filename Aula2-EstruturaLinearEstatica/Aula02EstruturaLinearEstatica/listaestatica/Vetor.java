@@ -113,7 +113,7 @@ public class Vetor {
    }
 
    //005
-   public void reduzirMetade(){
+   public void reduzirMetade(){    
      if(totalDeClientes == 0){
           throw new IllegalArgumentException("Nao ha clientes");
      }

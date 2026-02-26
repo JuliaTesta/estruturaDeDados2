@@ -106,7 +106,7 @@ public class VetorTest {
         assertEquals("Maria", vetor.pegar(0).getNome());
         assertEquals("Jose", vetor.pegar(1).getNome());
 
-        vetor.remover(0);
+        vetor.remover(0);   
         
         assertEquals(1, vetor.pegarTotalClientes());
         assertEquals("Jose", vetor.pegar(0).getNome());
@@ -208,7 +208,7 @@ public class VetorTest {
         assertEquals(10, vetor.tamanhoVetor()); 
 
         //reduzir para atender ao requisito(25% do tamanho)
-        vetor.removerUltimo();
+        vetor.removerUltimo();  
         vetor.removerUltimo();
         vetor.removerUltimo();
         vetor.removerUltimo();
