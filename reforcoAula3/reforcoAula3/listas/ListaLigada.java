@@ -133,7 +133,45 @@ public class ListaLigada {
         if(posicao < 0 || posicao >= tamanho){
             throw new IndexOutOfBoundsException("Posicao invalida: " + posicao);
         }
+        No atual = cabeca;
+        for(int i=0; i<posicao; i++){
+            atual = atual.proximo;
+        }
+        return atual.dado;
+    }
 
+    public boolean contem(int dado){
+        No atual = cabeca;
+        while (atual != null){
+            if(atual.dado == dado){
+                return true;
+            }
+            atual = atual.proximo;
+        }
+        return false;
+    }
+
+    public int tamanho(){
+        return this.tamanho;
+    }
+
+    public No obterInicio(){
+        return this.cabeca;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        No atual = cabeca;
+        while (atual != null) {
+            sb.append(atual.dado);
+            if (atual.proximo != null) {
+                sb.append(", ");
+            }
+            atual = atual.proximo;
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
 }
