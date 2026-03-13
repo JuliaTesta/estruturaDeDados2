@@ -10,4 +10,8 @@ public class No {
         esquerdo = null;
     }
 
+    public boolean isFolha(No no){
+        return no.esquerdo == null && no.direito == null;
+    }
+
 }
