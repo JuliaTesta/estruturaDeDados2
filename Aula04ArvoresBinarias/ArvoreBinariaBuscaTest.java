@@ -2,6 +2,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+import org.junit.experimental.theories.suppliers.TestedOn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -95,10 +99,79 @@ public class ArvoreBinariaBuscaTest {
         arvore.adicionar(15);
         arvore.adicionar(6);
         arvore.adicionar(4);
-        assertEquals(2, arvore.profundidadeNo(15));
-        assertEquals(1, arvore.profundidadeNo(20));
-        assertEquals(0, arvore.profundidadeNo(10));
-        assertEquals(-1, arvore.profundidadeNo(100));
+        assertEquals(2, arvore.profundidade(15));
+        assertEquals(1, arvore.profundidade(20));
+        assertEquals(0, arvore.profundidade(10));
+        assertEquals(-1, arvore.profundidade(100));
     }
 
+    @Test
+    public void calcularAltura(){
+        arvore.adicionar(10);
+        arvore.adicionar(20);
+        arvore.adicionar(15);
+        arvore.adicionar(6);
+        arvore.adicionar(4);
+        assertEquals(2, arvore.alturaNo(10));
+        assertEquals(1, arvore.alturaNo(20));
+        assertEquals(0, arvore.alturaNo(15));
+        assertEquals(-1, arvore.alturaNo(100));
+    }
+
+    @Test
+    public void inOrderTest() {
+        // Criar manualmente a árvore
+        No raiz = new No(10);
+        raiz.esquerdo = new No(5);
+        raiz.direito = new No(15);
+        raiz.esquerdo.esquerdo = new No(3);
+        raiz.esquerdo.direito = new No(7);
+        raiz.direito.esquerdo = new No(12);
+        raiz.direito.direito = new No(17);
+
+        // Criar a árvore
+        ArvoreBinariaBusca arvore = new ArvoreBinariaBusca();
+        arvore.raiz = raiz;
+
+        // Apenas chamar o método
+        System.out.println("In-Order Test (verifique visualmente):");
+        arvore.impressaoInOrder();
+    }
+
+    @Test
+    public void preOrderTest(){
+        No raiz = new No(10);
+        raiz.esquerdo = new No(5);
+        raiz.direito = new No(15);
+        raiz.esquerdo.esquerdo = new No(3);
+        raiz.esquerdo.direito = new No(7);
+        raiz.direito.esquerdo = new No(12);
+        raiz.direito.direito = new No(17);
+
+        ArvoreBinariaBusca arvore = new ArvoreBinariaBusca();
+        arvore.raiz = raiz;
+
+        System.out.println("Pre Order Test: ");
+        arvore.impressaoPreOrder();
+
+    }
+
+    @Test
+    public void posOrderTest(){
+        No raiz = new No(10);
+        raiz.esquerdo = new No(5);
+        raiz.direito = new No(15);
+        raiz.esquerdo.esquerdo = new No(3);
+        raiz.esquerdo.direito = new No(7);
+        raiz.direito.esquerdo = new No(12);
+        raiz.direito.direito = new No(17);
+
+        ArvoreBinariaBusca arvore = new ArvoreBinariaBusca();
+        arvore.raiz = raiz;
+
+        System.out.println("Pos Order Test: ");
+        arvore.impressaoPosOrdem();
+    }
 }
+
+

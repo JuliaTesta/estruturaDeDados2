@@ -124,35 +124,100 @@ public class ArvoreBinariaBusca {
             atual.valor = sucessor.valor;
 
             if (paiSucessor == atual){
-                paiSucessor.direito = sucessor.direito;
+                paiSucessor.direito = sucessor.direito; // justamente pq nao tem esquerda
             }
             else {
-                paiSucessor.esquerdo = sucessor.direito;
+                paiSucessor.esquerdo = sucessor.direito; //justamente pq ja foi pra maxima esquerda
             }
 
         }
     }
 
-    public int profundidadeNo(int valorNo){
-        return profundidadeNoRecursivo(raiz, valorNo, 0);
+     //Profundidade
+        public int profundidade(int valorNo){
+            return profundidadeRecursivo(raiz, valorNo, 0);
+        }
+
+        private int profundidadeRecursivo(No noAtual, int valorNo, int profundidade){
+            if(noAtual == null){
+                return -1;
+            }
+
+            if(valorNo == noAtual.valor){
+                return profundidade;
+            }
+
+            if(valorNo > noAtual.valor){
+                return profundidadeRecursivo(noAtual.direito, valorNo, profundidade +1);
+            }
+            else {
+                return profundidadeRecursivo(noAtual.esquerdo, valorNo, profundidade + 1);
+            }
+        }
+
+        //Altura 
+        public int alturaNo(int valorNo){
+            No no = buscar(valorNo);
+
+            if(no == null){
+                return -1;
+            }
+            return alturaNoRecursivo(no);
+        }
+
+        private int alturaNoRecursivo(No noAtual){
+            if(noAtual == null){
+                return -1;
+            }
+
+            int alturaEsquerda = alturaNoRecursivo(noAtual.esquerdo);
+            int alturaDireita = alturaNoRecursivo(noAtual.direito);
+
+            return 1 + Math.max(alturaEsquerda, alturaDireita);
+        }
+
+        //OBS: Usamos buscar na altura porque precisamos primeiro encontrar o nó para depois explorar toda a subárvore dele; já na profundidade, a gente encontra o nó enquanto desce pela árvore em um único caminho.
+
+    
+    //Impressão In-Order(EVD)
+    public void impressaoInOrder(){
+        impressaoInOrderRecursivo(raiz);
     }
 
-    private int profundidadeNoRecursivo(No noAtual, int valorNo, int profundidade ){
-        
-        if (noAtual == null){
-            return -1;
+    private void impressaoInOrderRecursivo(No noAtual){
+        if(noAtual != null){
+            impressaoInOrderRecursivo(noAtual.esquerdo); //E
+            System.out.println(noAtual.valor + " "); //V
+            impressaoInOrderRecursivo(noAtual.direito); //D
         }
-
-        if (valorNo == noAtual.valor){
-            return profundidade;
-        }
-
-        if(valorNo > noAtual.valor ){
-            return profundidadeNoRecursivo(noAtual.direito, valorNo, profundidade + 1);
-        }
-        else{
-            return profundidadeNoRecursivo(noAtual.esquerdo, valorNo, profundidade + 1);
-        }
-
     }
+
+    //Impressão Pre-Order(VED)
+    public void impressaoPreOrder(){
+        impressaoPreOrderRecursivo(raiz);
+    }
+
+    private void impressaoPreOrderRecursivo(No noAtual){
+        if(noAtual != null){
+            System.out.println(noAtual.valor + " "); //V
+            impressaoPreOrderRecursivo(noAtual.esquerdo);//E
+            impressaoPreOrderRecursivo(noAtual.direito);//D
+        }
+    }
+
+    //Impressao Pos-Ordem(EDV)
+    public void impressaoPosOrdem(){
+        impressaoPosOrderRecursivo(raiz);
+    }
+
+    private void impressaoPosOrderRecursivo(No noAtual){
+        if(noAtual != null){
+            impressaoPosOrderRecursivo(noAtual.esquerdo); //E
+            impressaoPosOrderRecursivo(noAtual.direito);//D
+            System.out.println(noAtual.valor + " ");
+        }
+    }  
 }
+
+        
+
