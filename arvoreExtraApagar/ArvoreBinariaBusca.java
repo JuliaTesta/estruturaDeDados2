@@ -127,82 +127,72 @@ public class ArvoreBinariaBusca{
                     paiSucessor.direito = sucessor.direito;
                 }
                 else {
-                    paiSucessor.esquerdo = sucessor.esquerdo;
+                    paiSucessor.esquerdo = sucessor.direito;
                 }
             }
         }
 
-        //Profundidade
-        public int profundidade(int valorNo){
-            return profundidadeRecursivo(raiz, valorNo, 0);
+        //Profundidade 
+      public int profundidade(int valorNo){
+        return profundidadeRecursivo(raiz, valorNo, 0);
+      }
+        
+      private int profundidadeRecursivo(No noAtual, int valorNo, int profundidade){
+        if(noAtual == null){
+            return -1;
         }
 
-        private int profundidadeRecursivo(No noAtual, int valorNo, int profundidade){
-            if(noAtual == null){
-                return -1;
-            }
-
-            if(valorNo == noAtual.valor){
-                return profundidade;
-            }
-
-            if(valorNo > noAtual.valor){
-                return profundidadeRecursivo(noAtual.direito, valorNo, profundidade +1);
-            }
-            else {
-                return profundidadeRecursivo(noAtual.esquerdo, valorNo, profundidade + 1);
-            }
+        if(valorNo == noAtual.valor){
+            return profundidade;
         }
 
-        //Altura 
-        public int alturaNo(int valorNo){
-            No no = buscar(valorNo);
+        if(valorNo > noAtual.valor){
+            return profundidadeRecursivo(noAtual.direito, valorNo, profundidade + 1);
+        }
+        else {
+            return profundidadeRecursivo(noAtual.esquerdo, valorNo, profundidade + 1);
+        }
+      }
 
-            if(no == null){
-                return -1;
-            }
-            return alturaNoRecursivo(no);
+        //Altura
+      public int alturaNo(int valorNo){
+        No no = buscar(valorNo);
+
+        if(no == null){
+            return -1;
         }
 
-        private int alturaNoRecursivo(No noAtual){
-            if(noAtual == null){
-                return -1;
-            }
+        return alturaNoRecursivo(no);
+      }
 
-            int alturaEsquerda = alturaNoRecursivo(noAtual.esquerdo);
-            int alturaDireita = alturaNoRecursivo(noAtual.direito);
-
-            return 1 + Math.max(alturaEsquerda, alturaDireita);
+      private int alturaNoRecursivo(No noAtual){
+        if(noAtual == null){
+            return -1;
         }
 
-        //Impressao InOrder(EVD)
-        public void impressaoInOrder(){
+        int alturaEsquerda = alturaNoRecursivo(noAtual.esquerdo);
+        int alturaDireita = alturaNoRecursivo(noAtual.direito);
+
+        return 1 + Math.max(alturaEsquerda, alturaDireita);
+
+      }
+
+
+       public void impressaoInOrder(){
+            //EVD
             impressaoInOrderRecursivo(raiz);
-        }
+       }
 
-        private void impressaoInOrderRecursivo(No noAtual){
-            if(noAtual != null){
-                impressaoInOrderRecursivo(noAtual.esquerdo);
-                System.out.println(noAtual.valor + " ");
-                impressaoInOrderRecursivo(noAtual.direito);
-            }
+       private void impressaoInOrderRecursivo(No noAtual){
+        if(noAtual != null){
+            impressaoInOrderRecursivo(noAtual.esquerdo);
+            System.out.println(noAtual.valor + " ");
+            impressaoInOrderRecursivo(noAtual.direito);
         }
+       }
 
-        //Impressao PreOrder(VED)
-        public void impressaoPreOrder(){
-            impressaoPreOrderRecursivo(raiz);
-        }
-
-        private void impressaoPreOrderRecursivo(No noAtual){
-            if(noAtual != null){
-                System.out.println(noAtual.valor + " ");
-                impressaoPreOrderRecursivo(noAtual.esquerdo);
-                impressaoPreOrderRecursivo(noAtual.direito);
-            }
-        }
-
-        //Impressao PosOder(EDV)
         public void impressaoPosOrder(){
+            //EDV
             impressaoPosOrderRecursivo(raiz);
         }
 
@@ -212,5 +202,19 @@ public class ArvoreBinariaBusca{
                 impressaoPosOrderRecursivo(noAtual.direito);
                 System.out.println(noAtual.valor + " ");
             }
+        }
+
+        public void impressaoPreOrder(){
+            //VED
+            impressaoPreOrderRecursivo(raiz);
+        }
+
+        private void impressaoPreOrderRecursivo(No noAtual){
+            if(noAtual != null){
+                System.out.println(noAtual.valor + " ");
+                impressaoPreOrderRecursivo(noAtual.esquerdo);
+                impressaoPreOrderRecursivo(noAtual.direito);
+            }
+
         }
 }

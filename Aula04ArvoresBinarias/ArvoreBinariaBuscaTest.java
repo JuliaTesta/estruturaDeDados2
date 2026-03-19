@@ -61,7 +61,7 @@ public class ArvoreBinariaBuscaTest {
         assertTrue(arvore.contem(19));
         assertFalse(arvore.contem(16));
         
-        No no = arvore.buscar(14);
+        No no = arvore.buscar(14)   ;
         assertTrue(no.isFolha(no));
 
         no = arvore.buscar(60);
@@ -107,11 +107,7 @@ public class ArvoreBinariaBuscaTest {
 
     @Test
     public void calcularAltura(){
-        arvore.adicionar(10);
-        arvore.adicionar(20);
-        arvore.adicionar(15);
-        arvore.adicionar(6);
-        arvore.adicionar(4);
+       
         assertEquals(2, arvore.alturaNo(10));
         assertEquals(1, arvore.alturaNo(20));
         assertEquals(0, arvore.alturaNo(15));
