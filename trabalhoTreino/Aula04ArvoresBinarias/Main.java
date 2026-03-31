@@ -6,12 +6,15 @@ public class Main {
         ArvoreBinariaBusca arvore = new ArvoreBinariaBusca();
         int opcao;
 
-        do{
-            System.out.println("\n--------MENU---------\n");
-            System.out.println(" 1 - Buscar Dispositivo\n");
-            System.out.println(" 2 - Atualizar leitura Dispositivo\n");
-
-
+        do {
+            System.out.println("---MENU---");
+            System.out.println(" 1 - Buscar Dispositivo");
+            System.out.println(" 2 - Atualizar Leituras");
+            System.out.println(" 3 - Listar Dipositivos em Alerta");
+            System.out.println(" 4 - Remover");
+            System.out.println(" 5 - Importar");
+            System.out.println(" 6 - Estatisticas");
+            System.out.println("0 - sair");
             System.out.println("Escolha uma opcao: ");
             opcao = sc.nextInt();
 
@@ -22,11 +25,10 @@ public class Main {
                     arvore.exibirLeituras(idBuscar);
                     break;
             
-                case 2: 
-                    System.out.println("Digite o id do dispositivo: ");
+                case 2:
+                    System.out.println("Digite o id a ser atualizado: ");
                     int idAtualizar = sc.nextInt();
 
-                    //historico
                     arvore.exibirLeituras(idAtualizar);
 
                     System.out.println("Digite o novo valor da leitura: ");
@@ -36,30 +38,23 @@ public class Main {
 
                     System.out.println("Historico Atualizado: ");
                     arvore.exibirLeituras(idAtualizar);
+        
                     break;
-
                 case 3:
-                    arvore.listarDispComAlerta();
+                    arvore.listarEmAlerta();
                     break;
                 case 4:
-                    System.out.println("Digite o ID para remover: ");
+                    System.out.println("Digite o id a ser removido:");
                     int idRemover = sc.nextInt();
+
                     arvore.remover(idRemover);
                     break;
-                case 5:
-                    System.out.println("Total: " + arvore.quantidadeNos());
-                    System.out.println("Altura: " + arvore.calcularAlturaArvore());
-                    System.out.println("% em alerta: " + arvore.percentualEmAlterta());
-                    break;
+                    
                 default:
                     break;
             }
 
-
         } while(opcao != 0);
-
-
-
 
 
 

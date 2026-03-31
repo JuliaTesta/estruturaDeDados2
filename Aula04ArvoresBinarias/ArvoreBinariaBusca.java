@@ -107,7 +107,7 @@ public class ArvoreBinariaBusca {
                     pai.esquerdo = filho;
                 }
                 else{
-                    pai.direito = filho;
+                    pai.direito = filho; //esta recebendo o filho, que pode ser null
                 }
             }
         }
@@ -133,48 +133,53 @@ public class ArvoreBinariaBusca {
         }
     }
 
-     //Profundidade
-        public int profundidade(int valorNo){
-            return profundidadeRecursivo(raiz, valorNo, 0);
+    //Altura Arvore
+        public int alturaArvore(){
+            return alturaRecursiva(raiz);
         }
 
-        private int profundidadeRecursivo(No noAtual, int valorNo, int profundidade){
+        private int alturaRecursiva(No noAtual){
             if(noAtual == null){
                 return -1;
             }
 
-            if(valorNo == noAtual.valor){
-                return profundidade;
-            }
-
-            if(valorNo > noAtual.valor){
-                return profundidadeRecursivo(noAtual.direito, valorNo, profundidade +1);
-            }
-            else {
-                return profundidadeRecursivo(noAtual.esquerdo, valorNo, profundidade + 1);
-            }
+            int alturaEsquerda = alturaRecursiva(noAtual.esquerdo);
+            int alturaDireita = alturaRecursiva(noAtual.direito);
+            return 1 + Math.max(alturaEsquerda, alturaDireita);
         }
-
-        //Altura 
-        public int alturaNo(int valorNo){
-            No no = buscar(valorNo);
-
+        
+        //Altura Nó
+        public int alturaNo(int valorBuscado){
+            No no = buscar(valorBuscado);
             if(no == null){
                 return -1;
             }
-            return alturaNoRecursivo(no);
+            return alturaRecursiva(no);
         }
 
-        private int alturaNoRecursivo(No noAtual){
-            if(noAtual == null){
-                return -1;
-            }
-
-            int alturaEsquerda = alturaNoRecursivo(noAtual.esquerdo);
-            int alturaDireita = alturaNoRecursivo(noAtual.direito);
-
-            return 1 + Math.max(alturaEsquerda, alturaDireita);
+        //Profundidade Arvore
+        public int profundidadeArvore(){
+            return alturaArvore();
         }
+
+        //Profundidade Nó
+       public int profundidadeNo(int valorBuscado){
+            return profundidadeRecursivo(raiz, valorBuscado, 0);
+       }
+
+       private int profundidadeRecursivo(No atual, int valorBuscado, int profundidade){
+        if(atual == null){
+            return -1;
+        }
+        if(atual.valor == valorBuscado){
+            return profundidade;
+        }
+        if(valorBuscado > atual.valor){
+            return profundidadeRecursivo(atual.direito, valorBuscado, profundidade+1);
+        }
+        return profundidadeRecursivo(atual.esquerdo, valorBuscado, profundidade + 1);
+       }
+
 
         //OBS: Usamos buscar na altura porque precisamos primeiro encontrar o nó para depois explorar toda a subárvore dele; já na profundidade, a gente encontra o nó enquanto desce pela árvore em um único caminho.
 
@@ -217,6 +222,84 @@ public class ArvoreBinariaBusca {
             System.out.println(noAtual.valor + " ");
         }
     }  
+
+    //encontre o menor e maior valor
+        public int menorValor(){
+            No atual = raiz;
+
+            if(raiz == null) {
+                return -1;
+            }
+
+            while(atual.esquerdo != null){
+                atual = atual.esquerdo;
+            }
+            return atual.valor;
+        }
+
+        public int maiorValor(){
+            No atual = raiz;
+
+            if(raiz == null) {
+                return -1;
+            }
+
+            while(atual.direito != null){
+                atual = atual.direito;
+            }
+            return atual.valor;
+        }
+
+        //Somar todos os valores da arvore
+        public int somaNos(){
+            return somaNosRecursivo(raiz);
+        }
+
+        private int somaNosRecursivo(No noAtual){
+            if(noAtual == null){
+                return 0;
+            }
+
+            return noAtual.valor + somaNosRecursivo(noAtual.direito) + somaNosRecursivo(noAtual.esquerdo);
+        }
+
+        //contarFolhas
+        public int contarFolhas(){
+            return contarFolhasRecursivo(raiz);
+        }
+
+        private int contarFolhasRecursivo(No noAtual){
+            if(noAtual == null){
+                return 0;
+            }
+
+            if(noAtual.esquerdo == null && noAtual.direito == null){
+                return 1;
+            }
+
+            return contarFolhasRecursivo(noAtual.direito) + contarFolhasRecursivo(noAtual.esquerdo);
+        }
+
+        //verificar balanceamento
+        public boolean estaBalanceada(){
+            return estaBalanceadaRecursivo(raiz);
+        }
+
+        private boolean estaBalanceadaRecursivo(No noAtual){
+            if(noAtual == null){
+                return true;
+            }
+
+            int alturaEsq = alturaRecursiva(noAtual.esquerdo);
+            int alturaDir = alturaRecursiva(noAtual.direito);
+
+            if(Math.abs(alturaEsq - alturaDir) > 1){
+                return false;
+            }
+
+            //verifica para os filhos
+            return estaBalanceadaRecursivo(noAtual.esquerdo) && estaBalanceadaRecursivo(noAtual.direito);
+        }
 }
 
         

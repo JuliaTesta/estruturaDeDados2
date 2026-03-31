@@ -99,10 +99,10 @@ public class ArvoreBinariaBuscaTest {
         arvore.adicionar(15);
         arvore.adicionar(6);
         arvore.adicionar(4);
-        assertEquals(2, arvore.profundidade(15));
-        assertEquals(1, arvore.profundidade(20));
-        assertEquals(0, arvore.profundidade(10));
-        assertEquals(-1, arvore.profundidade(100));
+        assertEquals(2, arvore.profundidadeNo(15));
+        assertEquals(1, arvore.profundidadeNo(20));
+        assertEquals(0, arvore.profundidadeNo(10));
+        assertEquals(-1, arvore.profundidadeNo(100));
     }
 
     @Test

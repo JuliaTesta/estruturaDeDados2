@@ -6,16 +6,13 @@ public class No {
     No esquerdo;
     No direito;
 
-    ArrayList<Leitura> historico;
-
+    ArrayList<Leitura>historico;
+    
     public No(Dispositivo disp) {
         this.disp = disp;
         esquerdo = null;
         direito = null;
-        historico = new ArrayList<>();
     }
-
-    
 
     public boolean folha(){
         return esquerdo == null && direito == null;

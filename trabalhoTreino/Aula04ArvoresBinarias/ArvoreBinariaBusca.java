@@ -8,11 +8,11 @@ public class ArvoreBinariaBusca {
         this.quantidadeNos = 0;
     }
 
-    public No inserir(Dispositivo disp) {
+    public void inserir(Dispositivo disp) {
         if (estaVazia()) {
             raiz = new No(disp);
             quantidadeNos++;
-            return raiz;
+            return;
         }
 
         No atual = raiz;
@@ -26,7 +26,7 @@ public class ArvoreBinariaBusca {
             } else if (disp.id > atual.disp.id) {
                 atual = atual.direito;
             } else {
-                return atual; // Valor já existe, ignora
+                return; // Valor já existe, ignora
             }
         }
 
@@ -38,7 +38,67 @@ public class ArvoreBinariaBusca {
             pai.direito = novoNo;
         }
         quantidadeNos++;
-        return novoNo;
+    }
+
+    public void exibirLeituras(int id){
+        No no = buscar(id);
+
+        if(no == null){
+            System.out.println("Dispositivo nao encontrado.\n");
+            return;
+        }
+        System.out.println("Historico: " + no.disp + ": ");
+        for(Leitura l: no.historico){
+            System.out.println("Valor: " + l.valor + " " + no.disp.unidade_medida + " Data/Hora: " + l.dataHora);
+        }
+    }
+
+    public void atualizarLeituras(int id, float valor){
+        No no = buscar(id);
+
+        if(no==null){
+            System.out.println("Dispositivo nao encontrado.\n");
+            return;
+        }
+
+        if(!no.historico.isEmpty()){
+            Leitura ultima = no.historico.get(no.historico.size() - 1);
+            System.out.println("Ultima leitura: " + ultima.valor + " -- " + ultima.dataHora);
+        } else {
+            System.out.println("Nao ha leituras neste dispositivo.\n");
+        }
+
+        //sobrescrever
+        if(no.historico.size() == 5){
+            no.historico.remove(0);
+        }
+
+        no.historico.add(new Leitura(valor));
+        System.out.println("Nova leitura registrada: " + valor);
+
+    }
+
+    public void listarEmAlerta(){
+        listarEmAlertaRecursivo(raiz);
+    }
+
+    private void listarEmAlertaRecursivo(No noAtual){
+        if(noAtual == null){
+            return;
+        }
+
+        listarEmAlertaRecursivo(noAtual.esquerdo); //id crescente
+
+        if(!noAtual.historico.isEmpty()){
+            Leitura ultima = noAtual.historico.get(noAtual.historico.size() -1);
+            if(ultima.valor > noAtual.disp.valor_alerta){
+                System.out.println("ID: " + noAtual.disp.id
+                                    + " Nome: " + noAtual.disp.nome 
+                                    + " Valor: " + ultima.valor
+                                    + " Limite alerta: " + noAtual.disp.valor_alerta);
+            }
+        }
+        listarEmAlertaRecursivo(noAtual.direito);
     }
 
     public boolean existe(Dispositivo disp) {
@@ -114,7 +174,6 @@ public class ArvoreBinariaBusca {
 
             // Copiar o valor do sucessor para o nó atual
             atual.disp.id = sucessor.disp.id;
-            atual.historico = sucessor.historico;
 
             // Remover o sucessor (que tem no máximo um filho direito)
             if (paiSucessor == atual) {
@@ -139,25 +198,24 @@ public class ArvoreBinariaBusca {
     }
 
     private int calcularAlturaRecursivo(No atual) {
-       if(atual == null){
-        return -1;
-       }
-       int alturaEsquerda = calcularAlturaRecursivo(atual.esquerdo);
-       int alturaDireita = calcularAlturaRecursivo(atual.direito);
-       return 1+ Math.max(alturaDireita, alturaEsquerda);
+        if (atual == null) {
+            return -1;
+        }
+        int alturaEsquerda = calcularAlturaRecursivo(atual.esquerdo);
+        int alturaDireita = calcularAlturaRecursivo(atual.direito);
+        return 1 + Math.max(alturaEsquerda, alturaDireita);
     }
 
     public int calcularAlturaNo(Dispositivo disp) {
         No no = buscar(disp.id);
-        if(no == null){
+        if (no == null) {
             return -1;
         }
         return calcularAlturaRecursivo(no);
-
     }
 
     public int calcularProfundidadeArvore() {
-       return calcularAlturaArvore();
+        return calcularAlturaArvore();
     }
 
     public int calcularProfundidadeNo(Dispositivo disp) {
@@ -165,16 +223,16 @@ public class ArvoreBinariaBusca {
     }
 
     private int calcularProfundidadeRecursivo(No atual, int id, int profundidade) {
-       if(atual == null){
+        if (atual == null) {
             return -1;
-       }
-       if(atual.disp.id == id){
+        }
+        if (atual.disp.id == id) {
             return profundidade;
-       }
-       if(id < atual.disp.id) {
+        }
+        if (id < atual.disp.id) {
             return calcularProfundidadeRecursivo(atual.esquerdo, id, profundidade + 1);
-       }
-       return calcularProfundidadeRecursivo(atual.direito, id, profundidade +1);
+        }
+        return calcularProfundidadeRecursivo(atual.direito, id, profundidade + 1);
     }
 
     public String imprimirPreOrdem() {
@@ -240,70 +298,6 @@ public class ArvoreBinariaBusca {
         }
     }
 
-    //Novas funcionalidade
-    public void exibirLeituras(int id){
-        No no = buscar(id);
-
-        if(no == null){
-            System.out.println("Dispositivo Nao encontrado.\n");
-            return;
-        }
-
-        System.out.println("Historico " + no.disp.nome + ":");
-        for(Leitura l: no.historico){
-            System.out.println("Valor: " + l.valor + " " + no.disp.unidade_medida + "Data/Hora: " + l.dataHora);
-        }
-    }
-
-    public void atualizarLeituras(int id, float valor){
-        No no = buscar(id);
-
-        if(no == null){
-            System.out.println("Dispositivo nao encontrado.\n");
-            return;
-        }
-
-        //Ultima leitura
-        if(!no.historico.isEmpty()){
-            Leitura ultima = no.historico.get(no.historico.size() -1);
-            System.out.println("Ultima leitura: " + ultima.valor + "--" + ultima.dataHora);
-        }
-        else {
-            System.out.println("Nao ha leituras neste dispositivo.\n");
-        }
-
-        //sobrescrever
-        if(no.historico.size() == 5){
-            no.historico.remove(0); //mais antigo
-        }
-
-        no.historico.add(new Leitura(valor));
-        System.out.println("Nova leitura: " + valor);
-    }
-
-    //Dispositivos com Alerta
-    public void listarDispComAlerta(){
-        listarEmAlertaRecursivo(raiz);
-    }
-
-    private void listarEmAlertaRecursivo(No noAtual){
-        if(noAtual == null){
-            return;
-        }
-        listarEmAlertaRecursivo(noAtual.esquerdo);
-
-        if(!noAtual.historico.isEmpty()){
-            Leitura ultima = noAtual.historico.get(noAtual.historico.size()-1);
-            if(ultima.valor > noAtual.disp.valor_alerta){
-                System.out.println("ID: " + noAtual.disp.id
-                                    + " Nome: " + noAtual.disp.nome 
-                                    + " Valor: " + ultima.valor
-                                    + " Limite alerta: " + noAtual.disp.valor_alerta);
-            }
-        }
-        listarEmAlertaRecursivo(noAtual.direito);
-    }
-
     public double percentualEmAlerta(){
         int total = quantidadeNos();
         if(total == 0){
@@ -311,7 +305,8 @@ public class ArvoreBinariaBusca {
         }
 
         int alertas = contarAlertas(raiz);
-        return (alertas * 100.0) / total;
+
+        return(alertas * 100.0) / total;
     }
 
     private int contarAlertas(No noAtual){
@@ -326,8 +321,6 @@ public class ArvoreBinariaBusca {
                 count = 1;
             }
         }
-
-        return count + contarAlertas(noAtual.direito) + contarAlertas(noAtual.esquerdo);
+        return count + contarAlertas(noAtual.esquerdo) + contarAlertas(noAtual.direito);
     }
-
 }
