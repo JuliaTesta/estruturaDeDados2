@@ -593,4 +593,14 @@ public class AVLTeste {
         arvore.cheia();
     }
     
+    @Test
+    public void testarInsercaoDezElementosMantemAVL(){
+        int[] valores = {10, 20, 30, 40, 50, 25, 5, 35, 45, 15};
+
+        for(int v: valores){
+            arvore.inserir(v);
+        }
+
+        assertTrue(arvore.ehAVL());
+    }
 }

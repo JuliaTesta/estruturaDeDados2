@@ -148,53 +148,61 @@ public class ArvoreBinariaBusca{
             if(no == null){
                 return -1;
             }
+
             return alturaRecursivo(no);
         }
-
+       
         private int alturaRecursivo(No noAtual){
             if(noAtual == null){
                 return -1;
             }
 
-            int altEsq = alturaRecursivo(noAtual.esquerdo);
-            int altDir = alturaRecursivo(noAtual.direito);
+            int alturaEsq = alturaRecursivo(noAtual.esquerdo);
+            int alturaDir = alturaRecursivo(noAtual.direito);
 
-            return 1 + Math.max(altEsq, altDir);
+            return 1 + Math.max(alturaDir, alturaEsq);
         }
-       
         //Profundidade Arvore
         public int profundidadeArvore(){
             return alturaArvore();
         }
 
+        
         //Profundidade Nó
        public int profundidadeNo(int valorBuscado){
-        return profundidadeRecursivo(raiz, valorBuscado, 0);
-      }
+            No no = buscar(valorBuscado);
 
-      private int profundidadeRecursivo(No noAtual, int valorBuscado, int profundidade){
-        if(noAtual == null){
-            return -1;
+            if(no == null){
+                return -1;
+            }
+
+            return profundidadeRecursivo(raiz, valorBuscado, 0);
+       }
+
+       private int profundidadeRecursivo(No atual, int valorBuscado, int profundidade){
+            if(atual == null){
+                return -1;
+            }
+
+            if(atual.valor == valorBuscado){
+                return profundidade;
+            }
+
+            if(valorBuscado > atual.valor){
+                return profundidadeRecursivo(atual.direito, valorBuscado, profundidade + 1);
+            }
+
+            return profundidadeRecursivo(atual.esquerdo, valorBuscado, profundidade + 1);
         }
 
-        if(valorBuscado == noAtual.valor){
-            return profundidade;
-        }
-
-        if(valorBuscado > noAtual.valor){
-            return profundidadeRecursivo(noAtual.direito, valorBuscado, profundidade + 1);
-        }
-
-        return profundidadeRecursivo(noAtual.esquerdo, valorBuscado, profundidade + 1);
-      }
-      
         //Impressao InOrder EVD
         public void impressaoInOrder(){
+            //EVD
             impressaoInOrderRecursivo(raiz);
         }
 
         private void impressaoInOrderRecursivo(No noAtual){
-            if(noAtual != null){
+            if(noAtual!=null){
                 impressaoInOrderRecursivo(noAtual.esquerdo);
                 System.out.println(noAtual.valor + " ");
                 impressaoInOrderRecursivo(noAtual.direito);
@@ -237,7 +245,7 @@ public class ArvoreBinariaBusca{
                 return 0;
             }
 
-            return 1 + contarNosRecursivo(noAtual.direito) + contarNosRecursivo(noAtual.esquerdo);
+            return 1 + contarNosRecursivo(noAtual.esquerdo) + contarNosRecursivo(noAtual.direito);
         }
        
         //encontre o menor e maior valor
@@ -251,7 +259,6 @@ public class ArvoreBinariaBusca{
             while(atual.direito != null){
                 atual = atual.direito;
             }
-
             return atual.valor;
         }
 
@@ -296,29 +303,27 @@ public class ArvoreBinariaBusca{
                 return 1;
             }
 
-            return contarNosRecursivo(noAtual.direito) + contarNosRecursivo(noAtual.esquerdo);
+            return contarFolhasRecursivo(noAtual.direito) + contarFolhasRecursivo(noAtual.esquerdo);
         }
-        
-        
+       
         //verificar balanceamento
-        public boolean estaBalanceada(){
+        public boolean estaBalanceada(){ 
             return estaBalanceadaRecursivo(raiz);
         }
 
         private boolean estaBalanceadaRecursivo(No noAtual){
-            if(noAtual== null){
+            if(noAtual == null){
                 return true;
             }
 
-            int altEsq = alturaRecursivo(noAtual.esquerdo);
-            int altDir = alturaRecursivo(noAtual.direito);
+            int alturaEsq = alturaRecursivo(noAtual.esquerdo);
+            int alturaDir = alturaRecursivo(noAtual.direito);
 
-            if(Math.abs(altEsq - altDir) > 1){
+            if(Math.abs(alturaEsq - alturaDir) > 1){
                 return false;
             }
 
-            //verificar para os filhos
-            return estaBalanceadaRecursivo(noAtual.esquerdo) && estaBalanceadaRecursivo(noAtual.direito);
+            //verifica para os filhos
+            return estaBalanceadaRecursivo(noAtual.direito) && estaBalanceadaRecursivo(noAtual.esquerdo);
         }
-        
 }

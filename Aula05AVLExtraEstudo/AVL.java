@@ -287,14 +287,14 @@ public class AVL {
         }
 
         if(noAtual.esquerdo != null || noAtual.direito != null){
-            return 1 + naoFolhasRecursivo(noAtual.esquerdo) + naoFolhasRecursivo(noAtual.esquerdo);
+            return 1 + naoFolhasRecursivo(noAtual.direito) + naoFolhasRecursivo(noAtual.esquerdo);  
         }
 
-        return 0; //é folha, não conta
+        //é folha
+        return 0;
     }
-    
 
-    //verificar se a arvore é estritamente binaria (0 ou 2 filhos)
+    //verificar se a arvore é estritamente binaria (0 ou 2 filhos)]
     public boolean estritamenteBinaria(){
         return estritamenteBinariaRecursivo(raiz);
     }
@@ -304,19 +304,17 @@ public class AVL {
             return true;
         }
 
-        //se tem 1 filho, não é
-        if((noAtual.direito == null && noAtual.esquerdo != null) || (noAtual.direito != null && noAtual.esquerdo == null)){
+        //se tem 1 filho, nao é
+        if((noAtual.esquerdo == null && noAtual.direito != null) || (noAtual.esquerdo != null && noAtual.direito == null)){
             return false;
         }
 
         return estritamenteBinariaRecursivo(noAtual.direito) && estritamenteBinariaRecursivo(noAtual.esquerdo);
     }
     
-
     //verificar se é completa (tudo deve vir sendo preenchido da esquerda para direita)
     public boolean completa(){
         int totalNos = contarNos();
-
         return completaRecursiva(raiz, 0, totalNos);
     }
 
@@ -329,7 +327,7 @@ public class AVL {
             return false;
         }
 
-        return completaRecursiva(no.esquerdo,2* indice + 1, totalNos) && completaRecursiva(no.direito, 2* indice + 2, totalNos);
+        return completaRecursiva(no.direito, 2* indice + 2, totalNos) && completaRecursiva(no.esquerdo, 2* indice + 1, totalNos);
     }
 
     //verificar se é cheia (folha = zero filhos; interno = 2 filhos)
@@ -343,18 +341,16 @@ public class AVL {
         }
 
         //se for folha, ok
-        if(noAtual.esquerdo == null && noAtual.direito == null){
+        if(noAtual.direito == null && noAtual.direito == null){
             return true;
         }
 
-        if(noAtual.direito != null && noAtual.esquerdo != null){
-            return cheiaRecursivo(noAtual.esquerdo)&& cheiaRecursivo(noAtual.direito);
+        if(noAtual.esquerdo != null && noAtual.direito != null){
+            return cheiaRecursivo(noAtual.esquerdo) && cheiaRecursivo(noAtual.direito);
         }
-
         return false;
     }
     
-
     //contar rotações realizadas durante inserções
     private int contadorRotacoes = 0;
 
@@ -366,7 +362,7 @@ public class AVL {
     public void imprimirNosNivel(int nivelDesejado){
         imprimirNosNivelRecursivo(raiz, 0, nivelDesejado);
     }
- 
+
     private void imprimirNosNivelRecursivo(No no, int nivelAtual, int nivelDesejado){
         if(no == null){
             return;
@@ -379,5 +375,23 @@ public class AVL {
 
         imprimirNosNivelRecursivo(no.esquerdo, nivelAtual + 1, nivelDesejado);
         imprimirNosNivelRecursivo(no.direito, nivelAtual + 1, nivelDesejado);
+    }
+
+    public boolean ehAVL(){
+        return ehAVLRecursivo(raiz);
+    }
+
+    private boolean ehAVLRecursivo(No noAtual){
+        if(noAtual == null){
+            return true;
+        }
+
+        int fb = fatorBalanceamento(noAtual);
+
+        if(fb > 1 || fb < -1){
+            return false;
+        }
+
+        return ehAVLRecursivo(noAtual.direito) && ehAVLRecursivo(noAtual.esquerdo);
     }
 }
