@@ -543,35 +543,30 @@ public class AVLTeste {
 
     @Test
     public void estBinariaTest(){
-        No raiz = new No(30);
-        raiz.esquerdo = new No(29);
-        raiz.direito = new No(45);
-        raiz.direito.direito = new No(47);
-        raiz.direito.esquerdo = new No(43);
-        raiz.direito.esquerdo.esquerdo = new No(41);
-        raiz.direito.esquerdo.esquerdo.direito = new No(44);
+        arvore.inserir(30);
+        arvore.inserir(26);
+        arvore.inserir(27);
+        arvore.inserir(45);
+        arvore.inserir(47);
+        arvore.inserir(43);
+        arvore.inserir(44);
 
-        AVL arvore = new AVL();
-        arvore.raiz = raiz;
-
+        
         System.out.println("EstritamenteBinaria");
         arvore.estritamenteBinaria();
     }
 
     @Test
     public void binariaCompTest(){
-        No raiz = new No(30);
-        raiz.esquerdo = new No(26);
-        raiz.esquerdo.esquerdo = new No(27);
-        raiz.direito = new No(45);
-        raiz.direito.direito = new No(47);
-        raiz.direito.esquerdo = new No(43);
-        raiz.direito.esquerdo.esquerdo = new No(41); 
-        raiz.direito.esquerdo.esquerdo.direito = new No(44);
+        arvore.inserir(30);
+        arvore.inserir(26);
+        arvore.inserir(27);
+        arvore.inserir(45);
+        arvore.inserir(47);
+        arvore.inserir(43);
+        arvore.inserir(41);
+        arvore.inserir(44);
         
-
-        AVL arvore = new AVL();
-        arvore.raiz = raiz;
 
         System.out.println("Binaria completa");
         arvore.completa();
@@ -579,19 +574,18 @@ public class AVLTeste {
 
     @Test
     public void cheiaTest(){
-        No raiz = new No(30);
-        raiz.esquerdo = new No(26);
-        raiz.esquerdo.esquerdo = new No(27);
-        raiz.direito = new No(45);
-        raiz.direito.direito = new No(47);
-        raiz.direito.esquerdo = new No(43);        
+        arvore.inserir(30);
+        arvore.inserir(26);
+        arvore.inserir(27);
+        arvore.inserir(45);
+        arvore.inserir(47);
+        arvore.inserir(43);        
 
-        AVL arvore = new AVL();
-        arvore.raiz = raiz;
-
-        System.out.println("Binaria Cheia");
+        System.out.println("Cheia");
         arvore.cheia();
     }
+
+    
     
     @Test
     public void testarInsercaoDezElementosMantemAVL(){

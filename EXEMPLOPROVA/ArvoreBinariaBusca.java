@@ -1,6 +1,6 @@
 public class ArvoreBinariaBusca {
 
-    No raiz;
+    NoABB raiz;
 
     public ArvoreBinariaBusca(){
         raiz = null;
@@ -13,12 +13,12 @@ public class ArvoreBinariaBusca {
     public void adicionar(int novoValor){
 
         if (estaVazia()){
-            raiz = new No(novoValor);
+            raiz = new NoABB(novoValor);
             return;
         }
 
-        No atual = raiz;
-        No pai = null;
+        NoABB atual = raiz;
+        NoABB pai = null;
 
         while (atual != null){
             pai = atual;
@@ -33,7 +33,7 @@ public class ArvoreBinariaBusca {
             }
         }
 
-        No novoNo = new No(novoValor);
+        NoABB novoNo = new NoABB(novoValor);
         if (novoValor < pai.valor){
             pai.esquerdo = novoNo;
         }
@@ -42,9 +42,9 @@ public class ArvoreBinariaBusca {
         }
     }
 
-    public No buscar (int valorBuscado){
+    public NoABB buscar (int valorBuscado){
 
-        No atual = raiz;
+        NoABB atual = raiz;
 
         while (atual != null){
         
@@ -72,8 +72,8 @@ public class ArvoreBinariaBusca {
             return;
         }
 
-        No atual = raiz;
-        No pai = null;
+        NoABB atual = raiz;
+        NoABB pai = null;
 
         while (atual != null && valorRemover != atual.valor){
             pai = atual;
@@ -92,7 +92,7 @@ public class ArvoreBinariaBusca {
         //folha e 1 filho: caso 1 e caso 2
         if (atual.esquerdo == null || atual.direito == null){
             
-            No filho;
+            NoABB filho;
             if (atual.esquerdo != null){
                 filho = atual.esquerdo;
             }
@@ -113,8 +113,8 @@ public class ArvoreBinariaBusca {
         }
         else { //caso 3
 
-            No paiSucessor = atual;
-            No sucessor = atual.direito;
+            NoABB paiSucessor = atual;
+            NoABB sucessor = atual.direito;
 
             while (sucessor.esquerdo != null) {
                 paiSucessor = sucessor;
@@ -138,7 +138,7 @@ public class ArvoreBinariaBusca {
             return alturaRecursiva(raiz);
         }
 
-        private int alturaRecursiva(No noAtual){
+        private int alturaRecursiva(NoABB noAtual){
             if(noAtual == null){
                 return -1;
             }
@@ -150,7 +150,7 @@ public class ArvoreBinariaBusca {
         
         //Altura Nó
         public int alturaNo(int valorBuscado){
-            No no = buscar(valorBuscado);
+            NoABB no = buscar(valorBuscado);
             if(no == null){
                 return -1;
             }
@@ -167,7 +167,7 @@ public class ArvoreBinariaBusca {
             return profundidadeRecursivo(raiz, valorBuscado, 0);
        }
 
-       private int profundidadeRecursivo(No atual, int valorBuscado, int profundidade){
+       private int profundidadeRecursivo(NoABB atual, int valorBuscado, int profundidade){
         if(atual == null){
             return -1;
         }
@@ -189,7 +189,7 @@ public class ArvoreBinariaBusca {
         impressaoInOrderRecursivo(raiz);
     }
 
-    private void impressaoInOrderRecursivo(No noAtual){
+    private void impressaoInOrderRecursivo(NoABB noAtual){
         if(noAtual != null){
             impressaoInOrderRecursivo(noAtual.esquerdo); //E
             System.out.println(noAtual.valor + " "); //V
@@ -202,7 +202,7 @@ public class ArvoreBinariaBusca {
         impressaoPreOrderRecursivo(raiz);
     }
 
-    private void impressaoPreOrderRecursivo(No noAtual){
+    private void impressaoPreOrderRecursivo(NoABB noAtual){
         if(noAtual != null){
             System.out.println(noAtual.valor + " "); //V
             impressaoPreOrderRecursivo(noAtual.esquerdo);//E
@@ -215,7 +215,7 @@ public class ArvoreBinariaBusca {
         impressaoPosOrderRecursivo(raiz);
     }
 
-    private void impressaoPosOrderRecursivo(No noAtual){
+    private void impressaoPosOrderRecursivo(NoABB noAtual){
         if(noAtual != null){
             impressaoPosOrderRecursivo(noAtual.esquerdo); //E
             impressaoPosOrderRecursivo(noAtual.direito);//D
@@ -227,7 +227,7 @@ public class ArvoreBinariaBusca {
 
         //encontre o menor e maior valor
       public int menorValor(){
-        No atual = raiz;
+        NoABB atual = raiz;
 
         if(raiz == null){
             return -1;
@@ -241,7 +241,7 @@ public class ArvoreBinariaBusca {
       }
 
       public int maiorValor(){
-        No atual = raiz;
+        NoABB atual = raiz;
 
         if(atual == null){
             return -1;
@@ -259,7 +259,7 @@ public class ArvoreBinariaBusca {
             return somaNosRec(raiz);
         }
 
-        private int somaNosRec(No no){
+        private int somaNosRec(NoABB no){
             if(no == null){
                 return 0;
             }
@@ -272,7 +272,7 @@ public class ArvoreBinariaBusca {
             return contarFolhasRec(raiz);
         }
 
-        private int contarFolhasRec(No no){
+        private int contarFolhasRec(NoABB no){
             if(no == null){
                 return 0;
             }
@@ -289,7 +289,7 @@ public class ArvoreBinariaBusca {
             return verificarBalanceamentoRec(raiz);
         }
 
-        private boolean verificarBalanceamentoRec(No no){
+        private boolean verificarBalanceamentoRec(NoABB no){
             if(no == null){
                 return true;
             }
@@ -311,7 +311,7 @@ public class ArvoreBinariaBusca {
             return ehABBrecursivo(raiz, Integer.MIN_VALUE, Integer.MAX_VALUE);
         }
 
-        private boolean ehABBrecursivo(No noAtual, int min, int max){
+        private boolean ehABBrecursivo(NoABB noAtual, int min, int max){
             if(noAtual == null){
                 return true;
             }
@@ -324,8 +324,8 @@ public class ArvoreBinariaBusca {
         }
 
         //Menor ancestral Comum
-       public No menorAncestralComum(int v1, int v2){
-            No atual = raiz;
+       public NoABB menorAncestralComum(int v1, int v2){
+            NoABB atual = raiz;
 
             while(atual != null){
                 if(v1 < atual.valor && v2 < atual.valor){
@@ -351,7 +351,7 @@ public class ArvoreBinariaBusca {
         imprimirApenasFolhasRec(raiz);
        }
 
-       private void imprimirApenasFolhasRec(No atual){
+       private void imprimirApenasFolhasRec(NoABB atual){
         if(atual == null){
             return;
         }
@@ -370,7 +370,7 @@ public class ArvoreBinariaBusca {
         return isEstritamenteBinariaRec(raiz);
        }
 
-       private boolean isEstritamenteBinariaRec(No atual){
+       private boolean isEstritamenteBinariaRec(NoABB atual){
         if(atual == null){
             return true;
         }

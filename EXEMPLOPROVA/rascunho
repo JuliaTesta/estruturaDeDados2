@@ -1,0 +1,65 @@
+public int contarIndicesComColisao(){
+        int contador = 0;
+
+        for(int i=0; i< tamanho; i++){
+            ListaLigada lista = tabela[i];
+
+            if(lista.tamanho() > 1){ //mais de um elemento = colisao
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+     public Cliente[] maioresPorIndice(){
+        Cliente[] resultado = new Cliente[tamanho];//array que guarda referencias para clientes. 
+
+        for(int i=0; i<tamanho; i++){
+            ListaLigada lista = tabela[i];
+            Cliente maior = null;
+
+            for(int j=0; j<lista.tamanho(); j++){
+                Cliente c = lista.pegarNaPosicao(j);
+
+                if(maior == null || c.codigo > maior.codigo){
+                    maior = c;
+                }
+            }
+            //se a lista estiver vazia:
+            resultado[i] = maior;
+        }
+        return resultado;
+    }
+
+    public int contarClientesPorInicial(char letra){
+        int contador = 0;
+        letra = Character.toUpperCase(letra);
+
+        for(int i=0; i<tamanho; i++){
+            ListaLigada lista = tabela[i];
+
+            for(int j=0; j<lista.tamanho(); j++){
+                Cliente c = lista.pegarNaPosicao(j);
+                if(!c.nome.isEmpty() && Character.toUpperCase(c.nome.charAt(0)) == letra){
+                    contador++;
+                }
+            }
+        }
+        return contador;
+    }
+
+    public ArvoreBinariaBusca inserirElementosNaABB(){
+        ArvoreBinariaBusca abb = new ArvoreBinariaBusca();
+
+        for(int i=0; i<tamanho; i++){
+
+            ListaLigada lista = tabela[i];
+
+            for(int j=0; j<lista.tamanho(); j++){
+
+                Cliente cliente = lista.pegarNaPosicao(j);
+                abb.adicionar(cliente.codigo);
+            }
+        }
+        return abb;
+    }

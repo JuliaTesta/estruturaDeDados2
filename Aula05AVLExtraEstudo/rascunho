@@ -1,0 +1,103 @@
+//1-Qual a largura? (maior quantidade de nós em um nível) TESTADO
+    public int larguraArvore(){
+        int altura = calcularAlturaArvore();
+        int maxLargura = 0;
+
+        for(int nivel =0; nivel<=altura; nivel++){
+            int larguraAtual = contarNivel(raiz, nivel);
+            if(larguraAtual > maxLargura){
+                maxLargura = larguraAtual;
+
+            }    
+        }
+
+        return maxLargura;
+    }
+
+    private int contarNivel(No atual, int nivelDesejado){
+        if(atual == null){
+            return 0;
+        }
+
+        if(nivelDesejado == 0){
+            return 1;
+        }
+
+        int esquerda = contarNivel(atual.esquerdo, nivelDesejado -1);
+        int direita = contarNivel(atual.direito, nivelDesejado -1);
+
+        return esquerda + direita;
+    }
+
+    //2- verificar se a arvore é estritamente binaria (0 ou 2 filhos) TESTADO
+    public boolean estritamenteBinaria(){
+        return estritamenteBinariaRec(raiz);
+    }
+
+    private boolean estritamenteBinariaRec(No noAtual){
+        if(noAtual == null){
+            return true;
+        }
+
+        //se tiver 1 filho, nao é
+        if((noAtual.direito != null && noAtual.esquerdo == null) || (noAtual.direito == null && noAtual.esquerdo != null)){
+            return false;
+        }
+
+        //verificar para os filhos
+        return estritamenteBinariaRec(noAtual.direito) && estritamenteBinariaRec(noAtual.esquerdo);
+    }
+    
+
+    //3- Verificar se é completa(tudo deve vir preenchido da esquerda para direita)
+    public boolean completa(){
+        int totalNos = contarNos();
+        return completaRecursiva(raiz, 0, totalNos);
+    }
+
+    private boolean completaRecursiva(No atual, int indice, int totalNos){
+        if(atual == null){
+            return true;
+        }
+
+        if(indice >= totalNos){
+            return false;
+        }
+
+        //verificar para filhos
+        return completaRecursiva(atual.direito, 2*indice + 2, totalNos) && completaRecursiva(atual.esquerdo, 2*indice+1, totalNos);
+    }
+    
+    //4- verificar se é cheia
+   public boolean cheia(){
+    return cheiaRecursiva(raiz);
+   }
+
+   private boolean cheiaRecursiva(No atual){
+    if(atual == null){
+        return true;
+    }
+
+    //se for folha, ok
+    if(atual.direito == null && atual.esquerdo == null){
+        return true;
+    }
+
+    if(atual.direito != null && atual.esquerdo != null){
+        return cheiaRecursiva(atual.direito) && cheiaRecursiva(atual.esquerdo);
+    }
+
+    return false;
+   }
+
+   public void impressaoInOrder(){
+         impressaoInOrderRecursivo(raiz);
+    }
+
+    private void impressaoInOrderRecursivo(No noAtual){
+        if(noAtual != null){
+            impressaoInOrderRecursivo(noAtual.esquerdo);
+            System.out.println(noAtual.valor + " ");
+            impressaoInOrderRecursivo(noAtual.direito);
+        }
+    }

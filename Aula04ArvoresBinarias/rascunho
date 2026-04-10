@@ -1,0 +1,134 @@
+--1
+public boolean estaBalanceada(){
+            return estaBalanceadaRecursivo(raiz);
+        }
+
+        private boolean estaBalanceadaRecursivo(No noAtual){
+            if(noAtual == null){
+                return true;
+            }
+
+            int alturaEsq = alturaRecursiva(noAtual.esquerdo);
+            int alturaDir = alturaRecursiva(noAtual.direito);
+
+            if(Math.abs(alturaEsq - alturaDir) > 1){
+                return false;
+            }
+
+            //verifica para os filhos
+            return estaBalanceadaRecursivo(noAtual.esquerdo) && estaBalanceadaRecursivo(noAtual.direito);
+
+--2
+ public int contarFolhas(){
+            return contarFolhasRecursivo(raiz);
+        }
+
+        private int contarFolhasRecursivo(No noAtual){
+            if(noAtual == null){
+                return 0;
+            }
+
+            if(noAtual.esquerdo == null && noAtual.direito == null){
+                return 1;
+            }
+
+            return contarFolhasRecursivo(noAtual.direito) + contarFolhasRecursivo(noAtual.esquerdo);
+        }
+
+--3
+public int somaNos(){
+            return somaNosRecursivo(raiz);
+        }
+
+        private int somaNosRecursivo(No noAtual){
+            if(noAtual == null){
+                return 0;
+            }
+
+            return noAtual.valor + somaNosRecursivo(noAtual.direito) + somaNosRecursivo(noAtual.esquerdo);
+        }
+
+--4
+  public int menorValor(){
+            No atual = raiz;
+
+            if(raiz == null) {
+                return -1;
+            }
+
+            while(atual.esquerdo != null){
+                atual = atual.esquerdo;
+            }
+            return atual.valor;
+        }
+
+        public int maiorValor(){
+            No atual = raiz;
+
+            if(raiz == null) {
+                return -1;
+            }
+
+            while(atual.direito != null){
+                atual = atual.direito;
+            }
+            return atual.valor;
+        }
+
+         //verificar balanceamento
+        public boolean verificarBalanceamento(){
+            return estaBalanceadaRecursivo(raiz);
+        }
+
+        private boolean estaBalanceadaRecursivo(No noAtual){
+            if(noAtual == null){
+                return true;
+            }
+
+            int alturaEsq = alturaRecursiva(noAtual.esquerdo);
+            int alturaDir = alturaRecursiva(noAtual.direito);
+
+            if(Math.abs(alturaEsq - alturaDir) > 1){
+                return false;
+            }
+
+            //verifica para os filhos
+            return estaBalanceadaRecursivo(noAtual.direito) && estaBalanceadaRecursivo(noAtual.esquerdo);
+        }  
+
+        //É ABB válida
+        public boolean ehABB(){
+            return ehABBRecursiva(raiz, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        }
+
+        private boolean ehABBRecursiva(No noAtual, int min, int max){
+            if(noAtual == null){
+                return true;
+            }
+
+            if(noAtual.valor <= min || noAtual.valor >= max){
+                return false;
+            }
+
+            return ehABBRecursiva(noAtual.esquerdo, min, noAtual.valor) && ehABBRecursiva(noAtual.direito, noAtual.valor, max);
+        }
+
+        //Menor ancestral Comum
+        public No menorAncestralComum(int v1, int v2){
+            No atual = raiz;
+
+            while(atual != null){
+                if(v1 < atual.valor && v2 < atual.valor){
+                    //Ambos estão a esquerda, desce
+                    atual = atual.esquerdo;
+                }
+                else if(v1 > atual.valor && v2 > atual.valor){
+                    //Ambos estao a direita, desce
+                    atual = atual.direito;
+                }
+                else {
+                    return atual;
+                }
+            }
+            return null; //nao encontrou, um dos valores pode nao estar na arvore
+        }

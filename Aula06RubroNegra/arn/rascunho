@@ -1,0 +1,94 @@
+//1- Contar nós vermelhos e pretos
+	public int contarVermelhos(){
+		return contarNosPorCorRecursivo(raiz, Cor.VERMELHO);
+	}
+
+	public int contarPretos(){
+		return contarNosPorCorRecursivo(raiz, Cor.PRETO);
+	}
+
+	private int contarNosPorCorRecursivo(No no, Cor cor){
+		if(no == nulo){
+			return 0;
+		}
+
+		int count = 0;
+
+		if(no.cor == cor){
+			count = 1;
+		}
+
+		return count + contarNosPorCorRecursivo(no.esquerdo, cor) + contarNosPorCorRecursivo(no.direito, cor);
+	}
+
+	//2- buscar sucessor e predecessor de um nó
+	public No sucessor(No no){ //PROXIMO MAIOR
+		if(no.direito != nulo){
+			return minimo(no.direito); //menor da direita
+		}
+
+		//se nao tiver direita, tem que subir
+		No pai = no.pai;
+
+		while(pai != null && no == pai.direito){//esta a direita do pai
+			no = pai;
+			pai = pai.pai;
+		}
+		return pai;
+	}
+
+	public No predecessor(No no){
+		if(no.esquerdo != nulo){ //PROXIMO MENOR
+			return maximo(no.esquerdo); //maior da esquerda
+		}
+
+		//se nao tiver esquerda, tem que subir
+		No pai = no.pai;
+
+		while(pai != null && no == pai.esquerdo){//esta a esquerda do pai
+			no = pai;
+			pai = pai.pai;
+		}
+		return pai;
+	}
+
+	//altura negra
+	public int alturaNegra(){
+		return alturaNegraRec(raiz);
+	}
+
+	private int alturaNegraRec(No no){
+		if(no == nulo){
+			return 1; //nulo conta como preto
+		}
+
+		int alturaEsq = alturaNegraRec(no.esquerdo);
+		int alturaDir = alturaNegraRec(no.direito);
+
+		if(alturaEsq != alturaDir){
+			return -1;
+		}
+
+		int alturaAtual = alturaEsq;
+		if(no.cor == Cor.PRETO){
+			alturaAtual += 1;
+		}
+
+		return alturaAtual;
+	}
+
+
+
+	if(atual == nulo){
+			return true; 
+		}
+
+		//se o nó atual é vermelho, seus filhos nao podem ser vermelhos
+		if(atual.cor == Cor.VERMELHO) {
+			if((atual.esquerdo != null && atual.esquerdo.cor == Cor.VERMELHO) || (atual.direito != null && atual.direito.cor == Cor.VERMELHO)) {
+				return false;
+			}
+		}
+
+		//verifica para os filhos
+		return validarRegraVermelho(atual.direito) && validarRegraVermelho(atual.esquerdo);

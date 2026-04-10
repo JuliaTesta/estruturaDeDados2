@@ -20,7 +20,7 @@ public class AVL {
     }
 
     private void atualizarAltura(No no) {
-        no.altura = 1 + Math.max(altura(no.esquerdo), altura(no.direito));
+        no.altura = 1 + Math.max(altura(no.esquerdo), altura(no.direito));  
     }
 
     private int fatorBalanceamento(No no) {
@@ -274,45 +274,58 @@ public class AVL {
         imprimirArvoreTextoRecursivo(atual.esquerdo, espaco);
     }
 
+     private int contadorRotacoes = 0;
+
     //EXERCICIOS
 
-    //contar nao folhas
-    public int naoFolhas(){
-        return naoFolhasRecursivo(raiz);
+    //1-Qual a largura? (maior quantidade de nós em um nível) TESTADO
+   public int larguraArvore(){
+    int altura = calcularAlturaArvore();
+    int maxLargura = 0;
+
+    for(int nivel = 0; nivel<=altura; nivel++){
+        int larguraAtual = contarNivel(raiz, nivel);
+        if(larguraAtual > maxLargura){
+            maxLargura = larguraAtual;
+        }
     }
+    return maxLargura;
+   }
 
-    private int naoFolhasRecursivo(No noAtual){
-        if(noAtual == null){
-            return 0;
-        }
-
-        if(noAtual.esquerdo != null || noAtual.direito != null){
-            return 1 + naoFolhasRecursivo(noAtual.direito) + naoFolhasRecursivo(noAtual.esquerdo);  
-        }
-
-        //é folha
+   private int contarNivel(No no, int nivelDesejado){
+    if(no == null){
         return 0;
     }
 
-    //verificar se a arvore é estritamente binaria (0 ou 2 filhos)]
-    public boolean estritamenteBinaria(){
-        return estritamenteBinariaRecursivo(raiz);
+    if(nivelDesejado == 0){
+        return 1;
     }
 
-    private boolean estritamenteBinariaRecursivo(No noAtual){
-        if(noAtual == null){
+    int esquerda = contarNivel(no.esquerdo, nivelDesejado -1);
+    int direita = contarNivel(no.direito, nivelDesejado - 1);
+
+    return esquerda + direita;        
+   }
+
+    //2- verificar se a arvore é estritamente binaria (0 ou 2 filhos) TESTADO
+   public boolean estritamenteBinaria(){
+    return estritamenteBinariaRec(raiz);
+   }
+
+   private boolean estritamenteBinariaRec(No atual){
+        if(atual == null){
             return true;
         }
 
-        //se tem 1 filho, nao é
-        if((noAtual.esquerdo == null && noAtual.direito != null) || (noAtual.esquerdo != null && noAtual.direito == null)){
+        //nao pode ter 1 filho
+        if((atual.esquerdo == null && atual.direito != null) || (atual.esquerdo != null && atual.direito == null)){
             return false;
         }
 
-        return estritamenteBinariaRecursivo(noAtual.direito) && estritamenteBinariaRecursivo(noAtual.esquerdo);
-    }
+        return estritamenteBinariaRec(atual.esquerdo) && estritamenteBinariaRec(atual.direito);
+   }
     
-    //verificar se é completa (tudo deve vir sendo preenchido da esquerda para direita)
+    //3- Verificar se é completa(tudo deve vir preenchido da esquerda para direita)
     public boolean completa(){
         int totalNos = contarNos();
         return completaRecursiva(raiz, 0, totalNos);
@@ -327,71 +340,60 @@ public class AVL {
             return false;
         }
 
-        return completaRecursiva(no.direito, 2* indice + 2, totalNos) && completaRecursiva(no.esquerdo, 2* indice + 1, totalNos);
+        return completaRecursiva(no.esquerdo, 2*indice + 1, totalNos) && completaRecursiva(no.direito, 2*indice+2, totalNos);
     }
-
-    //verificar se é cheia (folha = zero filhos; interno = 2 filhos)
+    
+    //4- verificar se é cheia
     public boolean cheia(){
         return cheiaRecursivo(raiz);
     }
 
-    private boolean cheiaRecursivo(No noAtual){
-        if(noAtual == null){
+    private boolean cheiaRecursivo(No no){
+        if(no == null){
             return true;
         }
 
         //se for folha, ok
-        if(noAtual.direito == null && noAtual.direito == null){
+        if(no.esquerdo == null && no.direito == null){
             return true;
         }
 
-        if(noAtual.esquerdo != null && noAtual.direito != null){
-            return cheiaRecursivo(noAtual.esquerdo) && cheiaRecursivo(noAtual.direito);
+        //nós internos precisam ter 2 filhos
+        if(no.direito != null && no.esquerdo != null){
+            return cheiaRecursivo(no.esquerdo) && cheiaRecursivo(no.direito);
         }
+
         return false;
     }
-    
-    //contar rotações realizadas durante inserções
-    private int contadorRotacoes = 0;
 
-    public int getTotalRotacoes(){
-        return contadorRotacoes;
+    //6- Retorne o menor elemento
+    public int menorElemento(){
+        return menorElementoRecursivo(raiz);
     }
 
-    //listar nós de um nível especifico
-    public void imprimirNosNivel(int nivelDesejado){
-        imprimirNosNivelRecursivo(raiz, 0, nivelDesejado);
-    }
-
-    private void imprimirNosNivelRecursivo(No no, int nivelAtual, int nivelDesejado){
-        if(no == null){
-            return;
-        }
-
-        if(nivelAtual == nivelDesejado){
-            System.out.println(no.valor + " ");
-            return;
-        }
-
-        imprimirNosNivelRecursivo(no.esquerdo, nivelAtual + 1, nivelDesejado);
-        imprimirNosNivelRecursivo(no.direito, nivelAtual + 1, nivelDesejado);
-    }
-
-    public boolean ehAVL(){
-        return ehAVLRecursivo(raiz);
-    }
-
-    private boolean ehAVLRecursivo(No noAtual){
+    private int menorElementoRecursivo(No noAtual){
         if(noAtual == null){
-            return true;
+            return 0;
         }
 
-        int fb = fatorBalanceamento(noAtual);
-
-        if(fb > 1 || fb < -1){
-            return false;
+        while(noAtual.esquerdo != null){
+            noAtual = noAtual.esquerdo;
         }
 
-        return ehAVLRecursivo(noAtual.direito) && ehAVLRecursivo(noAtual.esquerdo);
+        return noAtual.valor;
+    }
+
+    //7- In order EVD
+    public void impressaoInOrder(){
+        //EVD
+        impressaoInOrderRec(raiz);
+    }
+
+    private void impressaoInOrderRec(No no){
+        if(no != null){
+            impressaoInOrderRec(no.esquerdo);
+            System.out.println(no.valor + " ");
+            impressaoInOrderRec(no.direito);
+        }
     }
 }

@@ -1,16 +1,16 @@
-public class No {
+public class NoABB {
    
     int valor;
-    No direito;
-    No esquerdo;
+    NoABB direito;
+    NoABB esquerdo;
 
-    public No (int valor){
+    public NoABB (int valor){
         this.valor = valor;
         direito = null;
         esquerdo = null;
     }
 
-    public boolean isFolha(No no){
+    public boolean isFolha(NoABB no){
         return no.esquerdo == null && no.direito == null;
     }
 
